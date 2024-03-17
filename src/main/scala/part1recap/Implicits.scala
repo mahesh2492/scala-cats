@@ -1,4 +1,4 @@
-package part1Recap
+package part1recap
 
 object Implicits extends App {
   case class Person(name: String) {
