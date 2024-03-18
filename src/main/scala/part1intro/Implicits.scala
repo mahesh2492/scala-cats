@@ -1,4 +1,4 @@
-package part1recap
+package part1intro
 
 object Implicits extends App {
   case class Person(name: String) {
@@ -9,7 +9,7 @@ object Implicits extends App {
     def greet = s"Hi, my name is $name"
   }
 
-  val greeting: String = "Peter".greet  // new ImpersonableString("Peter").greet
+  val greeting: String = "Peter".greet // new ImpersonableString("Peter").greet
 
   //implicit arguments and values
   def increment(x: Int)(implicit amount: Int): Int = x + amount
@@ -19,14 +19,15 @@ object Implicits extends App {
   val increment2: Int = increment(5) //implicit argument 10 is passed by the compiler
 
   def multiply(x: Int)(implicit times: Int): Int = x * times
-   val times: Int = multiply(2)
+
+  val times: Int = multiply(2)
 
   trait JsonSerializer[T] {
     def toJson(value: T): String
   }
 
   def listToJson[T](value: List[T])(implicit serializer: JsonSerializer[T]): String =
-    value.map( e => serializer.toJson(e)).mkString("[", ",","]")
+    value.map(e => serializer.toJson(e)).mkString("[", ",", "]")
 
   implicit val personSerializer = new JsonSerializer[Person] {
     override def toJson(value: Person): String =
@@ -55,4 +56,3 @@ object Implicits extends App {
   // can be used for implicit conversions (DISCOURAGED)
   println(catsToJson)
 }
-
