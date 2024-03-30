@@ -13,9 +13,10 @@ object WeakerMonads {
     def ap[A, B](wf: M[A => B])(wa: M[A]): M[B] =
       flatMap(wa)(a => map(wf)(f => f(a)))
   }
+
   trait MyMonad[M[_]] extends Applicative[M] with MyFlatMap[M] {
     override def map[A, B](ma: M[A])(f: A => B): M[B] =
-      flatMap(ma)(x => pure(x))
+      flatMap(ma)(x => pure(f(x)))
   }
 
   import cats.FlatMap
