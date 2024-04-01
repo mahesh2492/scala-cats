@@ -26,18 +26,8 @@ object Traversing {
   import cats.syntax.applicative._
   import cats.syntax.flatMap._
   import cats.syntax.functor._
-  def listTraverse[F[_]: Monad, A, B](list: List[A])(func: A => F[B]): F[List[B]] = {
-    list.foldLeft(List.empty[B].pure[F]) { (wAccumulator, element) =>
-      val wElement = func(element)
-      for {
-        acc <- wAccumulator
-        element <- wElement
-      } yield acc :+ element
-    }
-  }
-
   import cats.syntax.apply._
-  def listTraverseApplicative[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] = {
+  def listTraverse[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] = {
     list.foldLeft(List.empty[B].pure[F]) { (wAccumulator, element) =>
       val wElement = func(element)
 
@@ -47,7 +37,7 @@ object Traversing {
 
   //Todo implement sequence
   def listSequence[F[_]: Applicative, A](list: List[F[A]]): F[List[A]] =
-    listTraverseApplicative(list)(identity)
+    listTraverse(list)(identity)
 
   //Todo 3 - What will be output
   val allPairs = listSequence(List(Vector(1, 2), Vector(3, 4))) // List((1, 3), (1, 4), (2, 3), (2, 4))
